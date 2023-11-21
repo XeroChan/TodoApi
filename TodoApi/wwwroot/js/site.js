@@ -10,10 +10,13 @@ function getItems() {
 
 function addItem() {
     const addNameTextbox = document.getElementById('add-name');
-
+    const personTextbox = document.getElementById('todo-by');
+    console.log('addNameTextbox.value:', addNameTextbox.value);
+    console.log('personTextbox.value:', personTextbox.value);
     const item = {
         isComplete: false,
-        name: addNameTextbox.value.trim()
+        name: addNameTextbox.value.trim(),
+        owner: personTextbox.value.trim()
     };
 
     fetch(uri, {
@@ -28,6 +31,7 @@ function addItem() {
         .then(() => {
             getItems();
             addNameTextbox.value = '';
+            personTextbox.value = '';
         })
         .catch(error => console.error('Unable to add item.', error));
 }
@@ -118,21 +122,19 @@ function _displayItems(data) {
         let textSpan = document.createElement('span');
         textSpan.innerText = item.name;
         textSpan.style.color = item.isComplete ? 'MediumSeaGreen' : 'Tomato';
-        //let textNode = document.createTextNode(item.name);
-        //textNode.style = colorStyle;
         td2.appendChild(textSpan);
 
-        let td3 = tr.insertCell(1);
+        let td3 = tr.insertCell(2);
         let textNode = document.createTextNode(item.owner);
-        td3.appendChild(textSpan);
+        td3.appendChild(textNode);
 
-        let td4 = tr.insertCell(2);
+        let td4 = tr.insertCell(3);
         td4.appendChild(editButton);
 
-        let td5 = tr.insertCell(3);
+        let td5 = tr.insertCell(4);
         td5.appendChild(deleteButton);
 
-        let td6 = tr.insertCell(4);
+        let td6 = tr.insertCell(5);
         td6.appendChild(addButton);
     });
 
@@ -156,10 +158,12 @@ function sortTable(column) {
 
 function addItemAfter(id) {
     const addNameTextbox = document.getElementById('add-name');
+    const personTextbox = document.getElementById('todo-by');
 
     const newItem = {
         isComplete: false,
-        name: addNameTextbox.value.trim()
+        name: addNameTextbox.value.trim(),
+        owner: personTextbox.value.trim()
     };
 
     fetch(uri, {
@@ -180,6 +184,9 @@ function addItemAfter(id) {
 
             // Update listy
             _displayItems(todos);
+
+            addNameTextbox.value = '';
+            personTextbox.value = '';
         })
         .catch(error => console.error('Unable to add item.', error));
 }

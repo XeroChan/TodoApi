@@ -57,6 +57,7 @@ namespace TodoApi.Controllers
             }
 
             todoItem.Name = todoItemDTO.Name;
+            todoItem.Owner = todoItemDTO.Owner;
             todoItem.IsComplete = todoItemDTO.IsComplete;
 
             try
@@ -77,7 +78,8 @@ namespace TodoApi.Controllers
             var todoItem = new TodoItem
             {
                 IsComplete = todoItemDTO.IsComplete,
-                Name = todoItemDTO.Name
+                Name = todoItemDTO.Name,
+                Owner = todoItemDTO.Owner
             };
 
             _context.TodoItems.Add(todoItem);
@@ -113,6 +115,7 @@ namespace TodoApi.Controllers
             {
                 Id = todoItem.Id,
                 Name = todoItem.Name,
+                Owner = todoItem.Owner,
                 IsComplete = todoItem.IsComplete
             };
     }

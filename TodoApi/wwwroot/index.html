@@ -10,6 +10,7 @@
     <h3>Add</h3>
     <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
         <input type="text" id="add-name" placeholder="New to-do">
+        <input type="text" id="todo-by" placeholder="person">
         <input type="submit" value="Add">
     </form>
 
@@ -30,6 +31,7 @@
         <tr>
             <th onclick="sortTable('isComplete')">Is Complete?</th>
             <th onclick="sortTable('name')">Name</th>
+            <th>Owner</th>
             <th></th>
             <th></th>
         </tr>
