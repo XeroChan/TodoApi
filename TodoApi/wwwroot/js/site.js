@@ -32,38 +32,6 @@ function addItem() {
         .catch(error => console.error('Unable to add item.', error));
 }
 
-function addItemAfter(id) {
-    const addNameTextbox = document.getElementById('add-name');
-
-    const newItem = {
-        isComplete: false,
-        name: addNameTextbox.value.trim()
-    };
-
-    fetch(uri, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newItem)
-    })
-        .then(response => response.json())
-        .then(data => {
-            // Find the index of the clicked item
-            const index = todos.findIndex(item => item.id === id);
-
-            // Insert the new item after the clicked item
-            todos.splice(index + 1, 0, data);
-
-            // Update the display
-            _displayItems(todos);
-        })
-        .catch(error => console.error('Unable to add item.', error));
-}
-
-
-
 function deleteItem(id) {
     fetch(`${uri}/${id}`, {
         method: 'DELETE'
@@ -147,17 +115,25 @@ function _displayItems(data) {
         td1.appendChild(isCompleteCheckbox);
 
         let td2 = tr.insertCell(1);
-        let textNode = document.createTextNode(item.name);
-        td2.appendChild(textNode);
+        let textSpan = document.createElement('span');
+        textSpan.innerText = item.name;
+        textSpan.style.color = item.isComplete ? 'MediumSeaGreen' : 'Tomato';
+        //let textNode = document.createTextNode(item.name);
+        //textNode.style = colorStyle;
+        td2.appendChild(textSpan);
 
-        let td3 = tr.insertCell(2);
-        td3.appendChild(editButton);
+        let td3 = tr.insertCell(1);
+        let textNode = document.createTextNode(item.owner);
+        td3.appendChild(textSpan);
 
-        let td4 = tr.insertCell(3);
-        td4.appendChild(deleteButton);
+        let td4 = tr.insertCell(2);
+        td4.appendChild(editButton);
 
-        let td5 = tr.insertCell(4);
-        td5.appendChild(addButton);
+        let td5 = tr.insertCell(3);
+        td5.appendChild(deleteButton);
+
+        let td6 = tr.insertCell(4);
+        td6.appendChild(addButton);
     });
 
     todos = data;
@@ -166,8 +142,8 @@ function _displayItems(data) {
 function sortTable(column) {
     todos.sort((a, b) => {
         if (column == 'isComplete') {
-            // Sortuj checkboxy (wartości logiczne) za pomocą operatora logicznego ===
-            return b[column] == a[column] ? 0 : b[column] ? 1 : -1;
+            // Sortuj checkboxy (wartości logiczne) za pomocą operatora logicznego ===, dlaczego przy zamianie a i b miejscami, sortowało desc?
+            return b[column] === a[column] ? 0 : b[column] ? 1 : -1;
         } else if (column == 'name') {
             // Sortuj inne kolumny
             const aValue = a[column].toString().toUpperCase();
@@ -176,4 +152,34 @@ function sortTable(column) {
         }
     });
     _displayItems(todos);
+}
+
+function addItemAfter(id) {
+    const addNameTextbox = document.getElementById('add-name');
+
+    const newItem = {
+        isComplete: false,
+        name: addNameTextbox.value.trim()
+    };
+
+    fetch(uri, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newItem)
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Znajdź indeks klikniętego itemu
+            const index = todos.findIndex(item => item.id === id);
+
+            // Wstaw nowy po nim
+            todos.splice(index + 1, 0, data);
+
+            // Update listy
+            _displayItems(todos);
+        })
+        .catch(error => console.error('Unable to add item.', error));
 }
