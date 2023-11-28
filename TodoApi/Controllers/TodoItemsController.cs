@@ -22,12 +22,23 @@ namespace TodoApi.Controllers
 
         // GET: api/TodoItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems(string owner = null)
         {
-            return await _context.TodoItems
+            IQueryable<TodoItem> query = _context.TodoItems;
+
+            if (!string.IsNullOrEmpty(owner))
+            {
+                query = query.Where(item => item.Owner == owner);
+            }
+
+            var todoItems = await query
                 .Select(x => ItemToDTO(x))
                 .ToListAsync();
+
+            return todoItems;
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id)

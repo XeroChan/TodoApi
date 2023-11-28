@@ -20,18 +20,24 @@
             <input type="hidden" id="edit-id">
             <input type="checkbox" id="edit-isComplete">
             <input type="text" id="edit-name">
+            <input type="text" id="edit-owner">
             <input type="submit" value="Save">
             <a onclick="closeInput()" aria-label="Close">&#10006;</a>
         </form>
     </div>
 
     <p id="counter"></p>
-
+    <h3>Filter</h3>
+    <form action="javascript:void(0);" onsubmit="filterItems()">
+        <input type="text" id="filter-owner" placeholder="Enter person's name">
+        <input type="submit" value="Filter">
+    </form>
+    <br />
     <table>
         <tr>
-            <th onclick="sortTable('isComplete')">Is Complete?</th>
-            <th onclick="sortTable('name')">Name</th>
-            <th>Owner</th>
+            <th><img src="assets/down-arrow.png" width="15" height="15" onclick="sortTable('isComplete')" />Is Complete?</th>
+            <th><img src="assets/down-arrow.png" width="15" height="15" onclick="sortTable('name')" />Name</th>
+            <th><img src="assets/down-arrow.png" width="15" height="15" onclick="sortTable('owner')" />Owner</th>
             <th></th>
             <th></th>
         </tr>

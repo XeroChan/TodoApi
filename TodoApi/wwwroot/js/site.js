@@ -1,18 +1,26 @@
 ﻿const uri = 'api/todoitems';
 let todos = [];
 
-function getItems() {
-    fetch(uri)
+function getItems(filterOwner) {
+    let url = uri;
+    if (filterOwner) {
+        url += `?owner=${encodeURIComponent(filterOwner)}`;
+    }
+
+    fetch(url)
         .then(response => response.json())
         .then(data => _displayItems(data))
         .catch(error => console.error('Unable to get items.', error));
 }
 
+function filterItems() {
+    const filterOwner = document.getElementById('filter-owner').value.trim();
+    getItems(filterOwner);
+}
+
 function addItem() {
     const addNameTextbox = document.getElementById('add-name');
     const personTextbox = document.getElementById('todo-by');
-    console.log('addNameTextbox.value:', addNameTextbox.value);
-    console.log('personTextbox.value:', personTextbox.value);
     const item = {
         isComplete: false,
         name: addNameTextbox.value.trim(),
@@ -46,8 +54,9 @@ function deleteItem(id) {
 
 function displayEditForm(id) {
     const item = todos.find(item => item.id === id);
-
+    console.log(item);
     document.getElementById('edit-name').value = item.name;
+    document.getElementById('edit-owner').value = item.owner;
     document.getElementById('edit-id').value = item.id;
     document.getElementById('edit-isComplete').checked = item.isComplete;
     document.getElementById('editForm').style.display = 'block';
@@ -58,7 +67,8 @@ function updateItem() {
     const item = {
         id: parseInt(itemId, 10),
         isComplete: document.getElementById('edit-isComplete').checked,
-        name: document.getElementById('edit-name').value.trim()
+        name: document.getElementById('edit-name').value.trim(),
+        owner: document.getElementById('edit-owner').value.trim()
     };
 
     fetch(`${uri}/${itemId}`, {
@@ -146,7 +156,7 @@ function sortTable(column) {
         if (column == 'isComplete') {
             // Sortuj checkboxy (wartości logiczne) za pomocą operatora logicznego ===, dlaczego przy zamianie a i b miejscami, sortowało desc?
             return b[column] === a[column] ? 0 : b[column] ? 1 : -1;
-        } else if (column == 'name') {
+        } else if (column == 'name' || column == 'owner') {
             // Sortuj inne kolumny
             const aValue = a[column].toString().toUpperCase();
             const bValue = b[column].toString().toUpperCase();
