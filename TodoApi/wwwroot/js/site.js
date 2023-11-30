@@ -1,10 +1,16 @@
 ﻿const uri = 'api/todoitems';
 let todos = [];
+let pageSize = 10; // Domyślne stronicowanie
+
+function changePageSize(size) {
+    pageSize = size;
+    getItems();
+}
 
 function getItems(filterOwner) {
-    let url = uri;
+    let url = `${uri}?pageSize=${pageSize}`;
     if (filterOwner) {
-        url += `?owner=${encodeURIComponent(filterOwner)}`;
+        url += `&owner=${encodeURIComponent(filterOwner)}`;
     }
 
     fetch(url)

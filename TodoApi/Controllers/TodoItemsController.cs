@@ -22,8 +22,7 @@ namespace TodoApi.Controllers
 
         // GET: api/TodoItems
         [HttpGet]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems(string owner = null)
+        public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems(int pageSize = 10, string owner = null)
         {
             IQueryable<TodoItem> query = _context.TodoItems;
 
@@ -33,11 +32,13 @@ namespace TodoApi.Controllers
             }
 
             var todoItems = await query
+                .Take(pageSize)  // Wyświetl zadaną liczbę rekordów
                 .Select(x => ItemToDTO(x))
                 .ToListAsync();
 
             return todoItems;
         }
+
 
 
         [HttpGet("{id}")]

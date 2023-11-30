@@ -33,11 +33,16 @@
         <input type="submit" value="Filter">
     </form>
     <br />
+    <div>
+        <button onclick="changePageSize(5)">Show 5 tasks</button>
+        <button onclick="changePageSize(10)">Show 10 tasks</button>
+        <button onclick="changePageSize(15)">Show 15 tasks</button>
+    </div>
     <table>
         <tr>
-            <th><img src="assets/down-arrow2.png" width="15" height="15" onclick="sortTable('isComplete')" />Is Complete?</th>
-            <th><img src="assets/down-arrow2.png" width="15" height="15" onclick="sortTable('name')" />Name</th>
-            <th><img src="assets/down-arrow2.png" width="15" height="15" onclick="sortTable('owner')" />Owner</th>
+            <th><img id="sort" src="assets/down-arrow2.png" width="15" height="15" onclick="sortTable('isComplete')" />Is Complete?</th>
+            <th><img id="sort" src="assets/down-arrow2.png" width="15" height="15" onclick="sortTable('name')" />Name</th>
+            <th><img id="sort" src="assets/down-arrow2.png" width="15" height="15" onclick="sortTable('owner')" />Owner</th>
             <th></th>
             <th></th>
         </tr>
